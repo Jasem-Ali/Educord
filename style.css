@@ -190,3 +190,9 @@
     height:100%;
     width:100%;
 }
+
+iframe{
+    margin: 0 auto;
+    display: block;
+    border: 1px solid #ccc;
+}
