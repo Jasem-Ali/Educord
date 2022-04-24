@@ -20,7 +20,16 @@ const io = socketio(server)
 //sets static folders
 app.use(express.static(path.join(__dirname, 'public')))
 app.use("/scripts", express.static(__dirname + '/node_modules/fullcalendar/'))
-app.use(connectLivereload());
+app.use(function (req, res, next) {
+
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    next();
+});
+
 
 const botName = 'EduBot'
 
