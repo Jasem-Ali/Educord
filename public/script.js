@@ -63,8 +63,7 @@ class sideBar {
 }
 
 //Represents a calendar for the user
-class calendarInterface
-{
+class calendarInterface {
     //Constructor for calendar class
     constructor() {
         //Contains the html content of claendar
@@ -87,7 +86,7 @@ class calendarInterface
         // window.document.querySelector("body").appendChild(this.calendar);
 
         //Create a new FullCalendar, no new parameters for now
-        this.fullCalendar = new FullCalendar.Calendar(this.calendar , {
+        this.fullCalendar = new FullCalendar.Calendar(this.calendar, {
             headerToolbar: {
                 center: 'addEventButton,deleteEventButton'
             },
@@ -95,16 +94,14 @@ class calendarInterface
                 addEventButton:
                 {
                     text: 'Add Event',
-                    click: function()
-                    {
+                    click: function () {
                         createEventPrompt();
                     }
                 },
                 deleteEventButton:
                 {
                     text: 'Delete Event',
-                    click: function()
-                    {
+                    click: function () {
                         deleteEventPrompt();
                     }
                 }
@@ -119,34 +116,30 @@ class calendarInterface
     }
 
     //Loads the full calendar
-    loadCalendar(events)
-    {
+    loadCalendar(events) {
         //Set fullcalendar's event source to be events
         this.fullCalendar.addEventSource(events);
     }
 
     //Deletes an event from fullcalendar
-    deleteEvent(deletedEvent)
-    {
+    deleteEvent(deletedEvent) {
         //Go through each event in fullcalendar
-        for(let event of this.fullCalendar.getEvents())
-        {
+        for (let event of this.fullCalendar.getEvents()) {
             //Create a variable that checks if an event is deleted
             let eventDeleted = false;
 
             //Modified start date
             let start = new Date(event.start);
-            start = start.toISOString().slice(0,10);
+            start = start.toISOString().slice(0, 10);
 
             //Create end to store event.end
             let end = null;
 
             //If event.end is not null
-            if(event.end != null)
-            {
+            if (event.end != null) {
                 //Modified end date
                 end = new Date(event.end);
-                end = end.toISOString().slice(0,10);
+                end = end.toISOString().slice(0, 10);
             }
 
             //Next, check if deletedEvent is the same as event
@@ -156,20 +149,19 @@ class calendarInterface
             let sameColor = deletedEvent.color == event.backgroundColor;
 
             //If deltedEvent is the same as event
-            if(sameTitle && sameStart && sameEnd && sameColor)
-            {
+            if (sameTitle && sameStart && sameEnd && sameColor) {
                 //Remove the event from full calendar
                 event.remove();
 
                 //Set eventDeleted to be true
                 eventDeleted = true;
-               
+
                 return;
             }
-          
+
 
             //If eventDelted is true, break the loop
-            if(eventDeleted == true) break;
+            if (eventDeleted == true) break;
         }
     }
 
@@ -575,9 +567,8 @@ class User {
 }
 
 class Server {
-    constructor(name, department, channels) {
+    constructor(name, channels) {
         this.name = name
-        this.department = department
         this.channels = new Array();
         for (let i = 0; i < channels.length; i++) {
             this.channels.push(channels[i])
@@ -607,7 +598,7 @@ class Server {
 
             document.getElementById('chatroomHeader').innerHTML = this.name;
 
-            
+
             currentUser.setCurrentServer(this.name)
 
 
@@ -649,7 +640,7 @@ class Server {
                 }
                 currentUser.setCurrentChannel(channel.name)
                 currentUser.setCurrentRoom(channel.name)
-                
+
                 console.log()
                 socket.emit('joinRoom', currentUser)
                 // add userlist functionality?
@@ -671,24 +662,6 @@ class Server {
         }
 
         channel.loadChatroom()
-    }
-
-    // Getters
-    name() {
-        return this.name
-    }
-    channels() {
-        return this.channels
-    }
-    department() {
-        return this.department
-    }
-    users() {
-        return this.users
-    }
-
-    setName(name) { // name setter
-        this.name = name
     }
 
     addChannel(channel) { // adds a channel/chatrom to the server
@@ -719,36 +692,13 @@ class Server {
 
         this.loadRooms();
     }
-
-    addUser(user) { // adds a user to the server
-        if (this.users.has(user)) return false
-        this.users.add(user)
-        return true
-    }
-    removeUser(user) { // removes a user from the server
-        if (this.users.has(user)) return false
-        this.users.delete(user)
-        return true
-    }
 }
 
 class Channel {
-    constructor(name, category, server) {
+    constructor(name, server) {
         this.chatLogs = [] // maybe make this into set?
         this.server = server
-        this.category = category
         this.name = name
-    }
-
-    // Getters
-    name() {
-        return this.name
-    }
-    category() {
-        return this.category
-    }
-    logs() {
-        return this.chatLogs
     }
 
     loadChatroom() { //changes the selected chatroom to blue
@@ -774,14 +724,6 @@ class Channel {
             }
         }
         return found;
-    }
-
-    editChat(message, newText) {
-        this.Message(message).setText(newText)
-    }
-
-    setCategory(category) {
-        this.category = category
     }
 }
 
@@ -845,13 +787,12 @@ span.onclick = function () {
 }
 
 // When the user clicks on <span> (x), close the modal
-spanCreate.onclick = function() {
+spanCreate.onclick = function () {
     document.getElementById("createEvent").style.display = "none";
 }
 
 //When user clicks on <span> (x), closes the modal for deleting an event
-spanClose.onclick = function ()
-{
+spanClose.onclick = function () {
     document.getElementById("deleteEvent").style.display = "none";
 }
 
@@ -880,32 +821,32 @@ function leaveHome() {
 }
 
 let spanChannel = [
-    new Channel("Homework Help", "help", "Spanish"),
-    new Channel("Group Chat", "Students", "Spanish"),
-    new Channel("Exam Prep", "Exam", "Spanish")
+    new Channel("Homework Help", "Spanish"),
+    new Channel("Group Chat", "Spanish"),
+    new Channel("Exam Prep", "Spanish")
 ]
 
 let chemChannel = [
-    new Channel("Homework Help", "help", "Chemistry"),
-    new Channel("Group Chat", "Students", "Chemistry"),
-    new Channel("Exam Prep", "Exam", "Chemistry")
+    new Channel("Homework Help", "Chemistry"),
+    new Channel("Group Chat", "Chemistry"),
+    new Channel("Exam Prep", "Chemistry")
 ]
 let englChannel = [
-    new Channel("Homework Help", "help", "Writing"),
-    new Channel("Group Chat", "Students", "Writing"),
-    new Channel("Exam Prep", "Exam", "Writing")
+    new Channel("Homework Help", "Writing"),
+    new Channel("Group Chat", "Writing"),
+    new Channel("Exam Prep", "Writing")
 ]
 let mathChannel = [
-    new Channel("Homework Help", "help", "Calculus"),
-    new Channel("Group Chat", "Students", "Calculus"),
-    new Channel("Exam Prep", "Exam", "Calculus")
+    new Channel("Homework Help", "Calculus"),
+    new Channel("Group Chat", "Calculus"),
+    new Channel("Exam Prep", "Calculus")
 ]
 
 let servers = [
-    new Server("Calculus", "Math", mathChannel),
-    new Server("Writing", "English", englChannel),
-    new Server("Chemistry", "Science", chemChannel),
-    new Server("Spanish", "Language", spanChannel)
+    new Server("Calculus", mathChannel),
+    new Server("Writing", englChannel),
+    new Server("Chemistry", chemChannel),
+    new Server("Spanish", spanChannel)
 ]
 
 let sendButton = document.getElementById('send')
@@ -928,15 +869,15 @@ sendButton.addEventListener('click', (e) => {
     let chatbox = document.getElementById("chatbox")
     if (currentUser.channel != "") {
         const msg = chatbox.value
-   
+
 
         socket.emit('chatMessage', msg)
         chatbox.focus()
         chatbox.value = "";
-    }else {
+    } else {
         alert("Error: please join a room")
     }
-   
+
 })
 
 socket.on('message', message => {
@@ -964,8 +905,8 @@ function sendMessage(message) {
     let userInfo = document.createElement("div"); // the time and user information of the message
     let messageText = document.createElement("div"); // the actual text of the message
     userInfo.id = "userinfo"
-    messageText.id ="message-text"
-    
+    messageText.id = "message-text"
+
 
     let name = document.createElement("p")
     let date = document.createElement("p")
@@ -975,7 +916,7 @@ function sendMessage(message) {
     date.textContent = `${message.time}`
     userInfo.appendChild(name)
     userInfo.appendChild(date)
-    
+
 
     messageText.textContent = message.text;
 
@@ -989,7 +930,7 @@ function sendMessage(message) {
         chatborder.appendChild(newMessage)
     }
     else { chatborder.insertChildAtIndex(newMessage, 1) }
-    
+
     //console.log(chatborder.childElementCount)
 }
 
@@ -1021,11 +962,11 @@ function editServers() {
         let serverName = prompt("Enter server name to add: ");
 
         let tempChannel = [
-            new Channel("Homework Help", "help", serverName),
-            new Channel("Group Chat", "Students", serverName),
-            new Channel("Exam Prep", "Exam", serverName)
+            new Channel("Homework Help", serverName),
+            new Channel("Group Chat", serverName),
+            new Channel("Exam Prep", serverName)
         ]
-        let newServer = new Server(serverName, "", tempChannel);
+        let newServer = new Server(serverName, tempChannel);
     }
 
     else if (action == "delete") {
@@ -1061,7 +1002,7 @@ function testSuite() {
 
     function addServer() {
         let originalNumber = document.querySelectorAll(".serverButton").length;
-        let newServer = new Server("TestServer99", "", "");
+        let newServer = new Server("TestServer99", "");
 
         if (originalNumber = document.querySelectorAll(".serverButton").length == originalNumber + 1)
             return "PASSED";
@@ -1071,7 +1012,7 @@ function testSuite() {
 
     function deleteServer() {
         let originalNumber = document.querySelectorAll(".serverButton").length;
-        document.getElementById("classes").removeChild(document.getElementById("TestServer99server"));
+        document.getElementById("classes").removeChild(document.getElementById("TestServer99server")); // same functionality as in the editServers case of delete
 
         if (originalNumber = document.querySelectorAll(".serverButton").length == originalNumber - 1)
             return "PASSED";
@@ -1084,281 +1025,248 @@ function testSuite() {
     calendarTests();
 }
 
-  //An object that get the events of a calendar
-  class calendar
-  {
-      //Constructs constructor
-      constructor()
-      {
+//An object that get the events of a calendar
+class calendar {
+    //Constructs constructor
+    constructor() {
         //A list of all events of a calendar
         this.events = [];
-      }
+    }
 
-      //Adds a new event to events
-      addNewEvent(newEvent)
-      {
-          //Add newEvent to events
-          this.events.push(newEvent);
+    //Adds a new event to events
+    addNewEvent(newEvent) {
+        //Add newEvent to events
+        this.events.push(newEvent);
 
-          //Add the current events to localstorage
-          this.storeEvents();
-      }
+        //Add the current events to localstorage
+        this.storeEvents();
+    }
 
-      //Store events
-      storeEvents()
-      {
-          //Store the events in local storage
-          window.localStorage.setItem("calendarEvents", JSON.stringify(this.events));
-      }
+    //Store events
+    storeEvents() {
+        //Store the events in local storage
+        window.localStorage.setItem("calendarEvents", JSON.stringify(this.events));
+    }
 
-      //Load events
-      loadEvents()
-      {
-          //Load the events from local storage
-          this.events = JSON.parse(window.localStorage.getItem("calendarEvents"));
+    //Load events
+    loadEvents() {
+        //Load the events from local storage
+        this.events = JSON.parse(window.localStorage.getItem("calendarEvents"));
 
-          //If the event is null, set it to be []
-          if(this.events == null)
-          {
-              this.events = [];
-          }
-      }
+        //If the event is null, set it to be []
+        if (this.events == null) {
+            this.events = [];
+        }
+    }
 
-      //Search for all events in event
-      searchEvent(title, start, end, color)
-      {
-          //Firstly, create a new list that will store the all filter items from events
-          let filteredEvents = this.events;
+    //Search for all events in event
+    searchEvent(title, start, end, color) {
+        //Firstly, create a new list that will store the all filter items from events
+        let filteredEvents = this.events;
 
-          //Next, check if title is not empty
-          //If title is not empty
-          if(title.length != 0)
-          {
-              //Filter the events for any event with titile
-              filteredEvents = filteredEvents.filter(event => event.title == title);
-          }
+        //Next, check if title is not empty
+        //If title is not empty
+        if (title.length != 0) {
+            //Filter the events for any event with titile
+            filteredEvents = filteredEvents.filter(event => event.title == title);
+        }
 
-          //Next check if start date is not empty
-          //If start date is not empty
-          if(start.length != 0)
-          {
-              //Filter the events for any event with start
-              filteredEvents = filteredEvents.filter(event => event.start == start);
-          }
+        //Next check if start date is not empty
+        //If start date is not empty
+        if (start.length != 0) {
+            //Filter the events for any event with start
+            filteredEvents = filteredEvents.filter(event => event.start == start);
+        }
 
-          //Next, check if end date is not empty
-          //If end date is not empty
-          if(end.length != 0)
-          {
+        //Next, check if end date is not empty
+        //If end date is not empty
+        if (end.length != 0) {
             //Modify end
             end = new Date(end)
             end.setDate(end.getDate() + 1);
-            end = end.toISOString().slice(0,10);
+            end = end.toISOString().slice(0, 10);
 
             //Filter the events for any event with end
             filteredEvents = filteredEvents.filter(event => event.end == end);
-          }
+        }
 
-          //Finally, check if color is not empty
-          //If color is not empty
-          if(color.length != 0)
-          {
-              //Filter the events for any event with color
-              filteredEvents = filteredEvents.filter(event => event.color == color);
-          }
+        //Finally, check if color is not empty
+        //If color is not empty
+        if (color.length != 0) {
+            //Filter the events for any event with color
+            filteredEvents = filteredEvents.filter(event => event.color == color);
+        }
 
-          //Return filteredEvents
-          return filteredEvents;
-      }
+        //Return filteredEvents
+        return filteredEvents;
+    }
 
-      //Removes an event from the list
-      removeEvent(event)
-      {
-          let count = 0;
-          let isEvent = false;
-          //Goes through each events from event and filter
-          this.events = this.events.filter(x => {
-              isEvent = false;
-              let sameTitle = x.title == event.title;
-              let sameStart = x.start == event.start;
-              let sameEnd = x.end == event.end;
-              let sameColor = x.color == event.color;
-              if (sameTitle && sameStart && sameEnd && sameColor && (count == 0)) {
-                  isEvent = true;
-                  count++;
-              }
-              
-              return !(sameTitle && sameStart && sameEnd && sameColor && isEvent);
-          });
+    //Removes an event from the list
+    removeEvent(event) {
+        let count = 0;
+        let isEvent = false;
+        //Goes through each events from event and filter
+        this.events = this.events.filter(x => {
+            isEvent = false;
+            let sameTitle = x.title == event.title;
+            let sameStart = x.start == event.start;
+            let sameEnd = x.end == event.end;
+            let sameColor = x.color == event.color;
+            if (sameTitle && sameStart && sameEnd && sameColor && (count == 0)) {
+                isEvent = true;
+                count++;
+            }
 
-          //Load the events to local storage
-          this.storeEvents();
-      }
-  }
+            return !(sameTitle && sameStart && sameEnd && sameColor && isEvent);
+        });
 
-  let cal = new calendar();
-  cal.loadEvents();
-  home.cal.loadCalendar(cal.events);
+        //Load the events to local storage
+        this.storeEvents();
+    }
+}
 
-  //A function that creates the prompt for creating a new event
-  function createEventPrompt()
-  {
+let cal = new calendar();
+cal.loadEvents();
+home.cal.loadCalendar(cal.events);
+
+//A function that creates the prompt for creating a new event
+function createEventPrompt() {
     //Firstly, get the createEvent modal
     let createEvent = window.document.querySelector("#createEvent");
 
     //Turn off the display of the button
     createEvent.style.display = "";
-  }
+}
 
-  //A function tath creates the prompt for deleting a new event
-  function deleteEventPrompt()
-  {
-      //Firstly, get the deleteEvent modal
-      //Then, set its display to be nonthing to show the modal
-      //As a result, the user will set the prompt for deleting an event
-      window.document.querySelector("#deleteEvent").style.display = "";
-  }
+//A function tath creates the prompt for deleting a new event
+function deleteEventPrompt() {
+    //Firstly, get the deleteEvent modal
+    //Then, set its display to be nonthing to show the modal
+    //As a result, the user will set the prompt for deleting an event
+    window.document.querySelector("#deleteEvent").style.display = "";
+}
 
-  //A function that creates a new event for calendar
-  function addEvent()
-  {
-      //Next, get all the inputs for title, startDate, endDate, and color
-      let title = window.document.getElementById("createTitle").value
-      let startDate = window.document.getElementById("createStartDate").value
-      let endDate = window.document.getElementById("createEndDate").value
-      let color = window.document.getElementById("createColor").value
+//A function that creates a new event for calendar
+function addEvent() {
+    //Next, get all the inputs for title, startDate, endDate, and color
+    let title = window.document.getElementById("createTitle").value
+    let startDate = window.document.getElementById("createStartDate").value
+    let endDate = window.document.getElementById("createEndDate").value
+    let color = window.document.getElementById("createColor").value
 
-      //Next, check all the inputs
-      //If all the inputs are valid
-      if(checkAllEventInput(title, startDate, endDate, color))
-      {
-        
+    //Next, check all the inputs
+    //If all the inputs are valid
+    if (checkAllEventInput(title, startDate, endDate, color)) {
+
         //Modify endDate so that endDate will be displayed correctly if end exists
-        if(endDate.length != 0)
-        {
+        if (endDate.length != 0) {
             let end = new Date(endDate)
             end.setDate(end.getDate() + 1);
-            endDate = end.toISOString().slice(0,10);
+            endDate = end.toISOString().slice(0, 10);
         }
         //If endate length is 0, set it to null
-        else
-        {
+        else {
             endDate = null;
         }
-        
-          //Next, create a new event
-          let newEvent = {
-              title : title,
-              start : startDate,
-              end : endDate, 
-              color : color
-          }
 
-          //Add the event to the calendarInterface
-          home.cal.fullCalendar.addEvent(newEvent);
+        //Next, create a new event
+        let newEvent = {
+            title: title,
+            start: startDate,
+            end: endDate,
+            color: color
+        }
 
-          //Also add the event to the calenda object
-          cal.addNewEvent(newEvent);
-      }
+        //Add the event to the calendarInterface
+        home.cal.fullCalendar.addEvent(newEvent);
 
-  }
+        //Also add the event to the calenda object
+        cal.addNewEvent(newEvent);
+    }
 
-  //Check all values from the input
-  function checkAllEventInput(title, startDate, endDate, color)
-  {
-      //Firstly, check title
-      //If title is not valid
-      if(checkTitle(title) == false)
-      {
-          //Return false
-          return false;
-      }
-      //Otherwise, if startDate is not valid
-      else if(checkStartDate(startDate)  == false)
-      {
-          //Return false
-          return false;
-      }
-      //Otherwise, if endDate is not valid
-      else if(checkEndDate(startDate, endDate) == false)
-      {
-          //Return false
-          return false;
-      }
-      //Otherwise, if color is not valid
-      else if(checkColor(color) == false)
-      {
-          //Return false
-          return false;
-      }
-      //Otherwise, all the inputs are valid
-      else
-      {
+}
+
+//Check all values from the input
+function checkAllEventInput(title, startDate, endDate, color) {
+    //Firstly, check title
+    //If title is not valid
+    if (checkTitle(title) == false) {
+        //Return false
+        return false;
+    }
+    //Otherwise, if startDate is not valid
+    else if (checkStartDate(startDate) == false) {
+        //Return false
+        return false;
+    }
+    //Otherwise, if endDate is not valid
+    else if (checkEndDate(startDate, endDate) == false) {
+        //Return false
+        return false;
+    }
+    //Otherwise, if color is not valid
+    else if (checkColor(color) == false) {
+        //Return false
+        return false;
+    }
+    //Otherwise, all the inputs are valid
+    else {
         //Return true
         return true;
-      }
-  }
+    }
+}
 
-  //Checks if title is valid
-  function checkTitle(title)
-  {
-      //Firstly, check if title is not empty
-      //If title is empty
-      if(title.length == 0)
-      {
-          //Alert the user that the input is empty
-          alert("Title is empty");
+//Checks if title is valid
+function checkTitle(title) {
+    //Firstly, check if title is not empty
+    //If title is empty
+    if (title.length == 0) {
+        //Alert the user that the input is empty
+        alert("Title is empty");
 
-          //Return false
-          return false;
-      }
+        //Return false
+        return false;
+    }
 
-      //Otherwise, return true
-      return true; 
-  }
+    //Otherwise, return true
+    return true;
+}
 
-  //Checks if startDate is valid
-  function checkStartDate(startDate)
-  {
-      //Firstly, check if startDate is not empty
-      //If startDate is empty
-      if(startDate.length == 0)
-      {
-          //Alert the user that the input is empty
-          alert("Start Date is Empty");
+//Checks if startDate is valid
+function checkStartDate(startDate) {
+    //Firstly, check if startDate is not empty
+    //If startDate is empty
+    if (startDate.length == 0) {
+        //Alert the user that the input is empty
+        alert("Start Date is Empty");
 
-          //Return false
-          return false;
-      }
-      //Otherwise, if start date is not a valid
-      else if(checkDate(startDate) == false)
-      {
-          //Alert the user that the input is invalid
-          alert("Start Date is invalid");
+        //Return false
+        return false;
+    }
+    //Otherwise, if start date is not a valid
+    else if (checkDate(startDate) == false) {
+        //Alert the user that the input is invalid
+        alert("Start Date is invalid");
 
-          //Return false
-          return false;
-      }
+        //Return false
+        return false;
+    }
 
-      //Otherwise, start date is valid, return true
-      return true;
-  }
+    //Otherwise, start date is valid, return true
+    return true;
+}
 
 
-  //Checks the endDate
-  function checkEndDate(startDate, endDate)
-  {
-      //If the length of endDate is 0, return true
-      if(endDate.length == 0)
-      {
-            //Return true
-            return true;
-      }
-      //Otherwise, if not
-      else
-      {
-        if(checkDate(endDate) == false)
-        {
+//Checks the endDate
+function checkEndDate(startDate, endDate) {
+    //If the length of endDate is 0, return true
+    if (endDate.length == 0) {
+        //Return true
+        return true;
+    }
+    //Otherwise, if not
+    else {
+        if (checkDate(endDate) == false) {
             //Alert the user that endDate is not valid
             alert("End Date is not valid");
 
@@ -1366,38 +1274,32 @@ function testSuite() {
             return false;
         }
         //Otherwise, if there is a startDate
-        else if(startDate.length != 0)
-        {
+        else if (startDate.length != 0) {
             //Check if the startDate come before endDate
             //If endDate does come before startDate, then end date is not valid
-            if(consecutiveDates(startDate, endDate) == false)
-            {
+            if (consecutiveDates(startDate, endDate) == false) {
                 //Return false
                 return false;
             }
             //Otherwise, return true
-            else
-            {
+            else {
                 //Return true
                 return true;
             }
         }
         //Otherwise, endDate is valid
-        else
-        {
+        else {
             //Return true
             return true;
         }
-      }
-  }
+    }
+}
 
-  //Checks if a date is valid
-  function checkDate(date)
-  {
+//Checks if a date is valid
+function checkDate(date) {
     //Firstly, check if the date is the correct length
     //If the date is not the correct length
-    if(date.length != 10)
-    {
+    if (date.length != 10) {
         //Return false
         return false;
     }
@@ -1407,9 +1309,8 @@ function testSuite() {
     let secondDash = date.charAt(7);
 
     //If the firstDash and secondDash are not equal to -
-    if(firstDash != '-' || secondDash != '-')
-    {
-         //Return false
+    if (firstDash != '-' || secondDash != '-') {
+        //Return false
         return false;
     }
 
@@ -1419,58 +1320,52 @@ function testSuite() {
     let thirdDot = date.charAt(3);
 
     //If the firstDot, secondDot, or thridDot are .
-    if(firstDot == '.' || secondDot == '.' || thirdDot == '.')
-    {
+    if (firstDot == '.' || secondDot == '.' || thirdDot == '.') {
         //Return false
         return false;
     }
 
     //Next, get the year, month, and day from date
     let year = Number(date.substring(0, 4));
-    let month = Number(date.substring(5,7));
-    let day = Number(date.substring(8,10));
+    let month = Number(date.substring(5, 7));
+    let day = Number(date.substring(8, 10));
 
     //Next, check if year, month and day are valids integers
     //If year, month, and day are not integers
-    if(!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day))
-    {
+    if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
         //Return false
         return false;
     }
 
     ///Finallyy, create a new date
     let newDate = new Date(date.toString());
-    
+
     //Check if the newDate is valid
     //If the date is not the correct value
-    if (isNaN(newDate.valueOf()))
-    {
+    if (isNaN(newDate.valueOf())) {
         //Return false
         return false
     }
-    
+
     //Otherwise, date is valid, 
     //Return true
     return true;
 }
 
-function consecutiveDates(startDate, endDate)
-{
+function consecutiveDates(startDate, endDate) {
     //Convert both startDate and endDate
     let start = new Date(startDate.toString());
     let end = new Date(endDate.toString());
-    
+
     //Then check if the endDate comes after the startDate
     //To do so, subtract start from end
     //If end - start is greater than 0, then endDate comes after startDate
-    if(end - start >= 0)
-    {
+    if (end - start >= 0) {
         //Return true
         return true;
     }
     //Otherwise, if end- start is less than 0, then start came before end
-    else
-    {
+    else {
         //Tell the user that end Date is coming before start date
         alert("End Date comes before Start Date");
 
@@ -1480,8 +1375,7 @@ function consecutiveDates(startDate, endDate)
 }
 
 //Checks if a color is valid
-function checkColor(color)
-{
+function checkColor(color) {
     //Firstly, create a new element that will not be used
     let element = document.createElement("p");
 
@@ -1490,25 +1384,22 @@ function checkColor(color)
 
     //Next, check the element's color
     //If the element's does not exist, then color is not valie
-    if(element.style.color == '')
-    {
-         //Tell the user that color is not valid
-         alert("The color does not exist");
+    if (element.style.color == '') {
+        //Tell the user that color is not valid
+        alert("The color does not exist");
 
-         //Return false
-         return false;
+        //Return false
+        return false;
     }
     //Otherwise if the color is not in lowercase
-    else if(checkColorFormat(color) == false)
-    {
+    else if (checkColorFormat(color) == false) {
         //Return false
         return false;
     }
     //Otherwise, the color does exist
-    else
-    {
-       //Return true
-       return true;
+    else {
+        //Return true
+        return true;
     }
 }
 
@@ -1516,8 +1407,7 @@ function checkColor(color)
 //The user should be allowed to search for any event
 //depending on the event's title, start date, end date, and color
 //The user can use multiple queries in their search
-function searchEvent()
-{
+function searchEvent() {
     //Firstly, get the values for each input in the delete event modal
     //This include titile, start date, end date, and color
     let title = window.document.querySelector("#deleteTitle").value;
@@ -1527,13 +1417,11 @@ function searchEvent()
 
     //Next, get checks if startDate, endDate, and color
     //If startDate is not empty
-    if(startDate.length != 0)
-    {
+    if (startDate.length != 0) {
         //Use check start date
         //If the startDate is not valid, then return
         //to end the function
-        if(!checkStartDate(startDate))
-        {
+        if (!checkStartDate(startDate)) {
             //Return 
             return;
         }
@@ -1541,12 +1429,10 @@ function searchEvent()
 
     //Next, check if endDate is valid
     //If endDate is not empty
-    if(endDate.length != 0)
-    {
+    if (endDate.length != 0) {
         //Check if end date is valid
         //If end date is not valid, then return to end the function
-        if(!checkEndDate(startDate, endDate))
-        {
+        if (!checkEndDate(startDate, endDate)) {
             //Return 
             return;
         }
@@ -1554,12 +1440,10 @@ function searchEvent()
 
     //Next, check if color is valid
     //If color is not empty
-    if(color.length != 0)
-    {
+    if (color.length != 0) {
         //Check if color is valid
         //If color is valid, then end the function
-        if(!checkColor(color))
-        {
+        if (!checkColor(color)) {
             //Return
             return;
         }
@@ -1570,14 +1454,12 @@ function searchEvent()
 
     //Next, check if filteredEvents is not empty
     //If filteredEvents is empty
-    if(filteredEvents.length == 0)
-    {
+    if (filteredEvents.length == 0) {
         //Tell the user that no event is found
         alert("No event found");
     }
     //Otherwise, if filteredEvents has elements
-    else 
-    {
+    else {
         //Create the option list
         addOptions(filteredEvents);
 
@@ -1587,35 +1469,30 @@ function searchEvent()
 }
 
 //Delete all options from the delete options
-function removeOptions()
-{
+function removeOptions() {
     //Firstly, use the document query selector to get deleteSelect
     let select = window.document.querySelector("#deleteSelect");
 
     //Next, go through each option of select
-    while(select.hasChildNodes())
-    {
+    while (select.hasChildNodes()) {
         //Remove the first option of select
         select.removeChild(select.firstChild);
     }
 }
 
 //Add new options to delete event select
-function addOptions(events)
-{
+function addOptions(events) {
     //Firstly, get the select for deleting events
     let select = window.document.querySelector("#deleteSelect");
 
     //Next, check if select still have children
-    if(select.hasChildNodes())
-    {
+    if (select.hasChildNodes()) {
         //Remove all options from the list
         removeOptions();
     }
 
     //Next, loop through each event in events
-    for(let event of events)
-    {
+    for (let event of events) {
         //Created a new option
         let option = document.createElement("option");
 
@@ -1627,12 +1504,11 @@ function addOptions(events)
         option.innerHTML = "Title: " + event.title + " | Start: " + event.start;
 
         //If the end date exists
-        if(event.end != null)
-        {
+        if (event.end != null) {
             //Modified end date
             let end = new Date(event.end);
             end.setDate(end.getDate() - 1);
-            end = end.toISOString().slice(0,10);
+            end = end.toISOString().slice(0, 10);
 
             //Add the end date to the option innerHTML
             option.innerHTML = option.innerHTML + " | End: " + end;
@@ -1647,8 +1523,7 @@ function addOptions(events)
 }
 
 //Deletes the event 
-function deleteEvent()
-{
+function deleteEvent() {
     //Firstly, get the select option
     let select = window.document.querySelector('#deleteSelect');
 
@@ -1666,19 +1541,16 @@ function deleteEvent()
 }
 
 //Checks if color is in the right format
-function checkColorFormat(color)
-{
-    
+function checkColorFormat(color) {
+
     //Go through each character in color
-    for(let i = 0; i < color.length; i++)
-    {
+    for (let i = 0; i < color.length; i++) {
         //Next, get the char at the color and get its ascii value
         let code = color.charCodeAt(i);
 
         //Next, use code to check if char is loweracse
         //If the character is not lowercase, then color is not lowercase
-        if(code >= 65 && code <= 90)
-        {
+        if (code >= 65 && code <= 90) {
             //Alert the user that the color is not in lowercased
             alert("Color not in lowercase");
 
@@ -1686,21 +1558,19 @@ function checkColorFormat(color)
             return false;
         }
     }
-    
+
     //If color is in the correct format, return true
     return true;
 }
 
 //Tests all functionallity within the calendar
-function calendarTests()
-{
+function calendarTests() {
     //Turn off alerts
     let alert = window.alert;
-    window.alert = function () {};
+    window.alert = function () { };
 
-     //Test if the calendar does add a event with no end date
-    function calTest17()
-    {
+    //Test if the calendar does add a event with no end date
+    function calTest17() {
         //Get the lengths of bot fullCalendar and calendar's events
         let fullLength = home.cal.fullCalendar.getEvents().length;
         let calLength = cal.events.length;
@@ -1720,13 +1590,12 @@ function calendarTests()
 
         //If both fullLength and calLength are 1, return PASSED
         //Otherwise, return FAILED
-        if(fullLength == 1 && calLength == 1) return "PASSED";
+        if (fullLength == 1 && calLength == 1) return "PASSED";
         else return "FAILED";
     }
 
     //Test if the calendar does add a event with an end date
-    function calTest18()
-    {
+    function calTest18() {
         //Get the lengths of bot fullCalendar and calendar's events
         let fullLength = home.cal.fullCalendar.getEvents().length;
         let calLength = cal.events.length;
@@ -1746,13 +1615,12 @@ function calendarTests()
 
         //If both fullLength and calLength are 1, return PASSED
         //Otherwise, return FAILED
-        if(fullLength == 1 && calLength == 1) return "PASSED";
+        if (fullLength == 1 && calLength == 1) return "PASSED";
         else return "FAILED";
     }
 
     //Test if serach the calendar with no inputs gives us a non filtered list of events
-    function calTest19()
-    {
+    function calTest19() {
         //Get the length of calendar's events
         let calLength = cal.events.length;
 
@@ -1775,8 +1643,7 @@ function calendarTests()
     }
 
     //Test if search looks for a specifc event 
-    function calTest20()
-    {
+    function calTest20() {
         //Next, set all the values of delete event to be empty
         window.document.querySelector("#deleteTitle").value = "Hello";
         window.document.querySelector("#deleteStartDate").value = "2022-04-25";
@@ -1796,8 +1663,7 @@ function calendarTests()
     }
 
     //Test deleting an event from a calendar with an end date
-    function calTest21()
-    {
+    function calTest21() {
         //Get the lengths of bot fullCalendar and calendar's events
         let fullLength = home.cal.fullCalendar.getEvents().length;
         let calLength = cal.events.length;
@@ -1815,19 +1681,18 @@ function calendarTests()
         deleteEvent();
 
         //Next, get the length of fullClaendar and calendar's events
-         //Next, check the the length of full calendar and calender
-         fullLength = home.cal.fullCalendar.getEvents().length - fullLength;
-         calLength = cal.events.length - calLength;
+        //Next, check the the length of full calendar and calender
+        fullLength = home.cal.fullCalendar.getEvents().length - fullLength;
+        calLength = cal.events.length - calLength;
 
-         //If fullLength and calLength are -1 then return passed, otherwise return failed
-         if(fullLength == -1 && calLength == -1) return "PASSED";
-         else return "FAILED";
+        //If fullLength and calLength are -1 then return passed, otherwise return failed
+        if (fullLength == -1 && calLength == -1) return "PASSED";
+        else return "FAILED";
     }
 
     //Test deleting an event with no end date
     //Test deleting an event from a calendar with an end date
-    function calTest22()
-    {
+    function calTest22() {
         //Get the lengths of bot fullCalendar and calendar's events
         let fullLength = home.cal.fullCalendar.getEvents().length;
         let calLength = cal.events.length;
@@ -1845,18 +1710,17 @@ function calendarTests()
         deleteEvent();
 
         //Next, get the length of fullClaendar and calendar's events
-         //Next, check the the length of full calendar and calender
-         fullLength = home.cal.fullCalendar.getEvents().length - fullLength;
-         calLength = cal.events.length - calLength;
+        //Next, check the the length of full calendar and calender
+        fullLength = home.cal.fullCalendar.getEvents().length - fullLength;
+        calLength = cal.events.length - calLength;
 
-         //If fullLength and calLength are -1 then return passed, otherwise return failed
-         if(fullLength == -1 && calLength == -1) return "PASSED";
-         else return "FAILED";
+        //If fullLength and calLength are -1 then return passed, otherwise return failed
+        if (fullLength == -1 && calLength == -1) return "PASSED";
+        else return "FAILED";
     }
 
     //Test getting a list from local storage. It also checks storing a list
-    function calTest23()
-    {
+    function calTest23() {
         //Get the current calendar's events
         let current = cal.events;
 
@@ -1865,7 +1729,7 @@ function calendarTests()
 
         //If current and cal.events are the same, return PASSED
         //Otherwise, return FAILED
-        if(current.length == cal.events.length) return "PASSED";
+        if (current.length == cal.events.length) return "PASSED";
         else return "FAILED";
     }
 
@@ -1880,5 +1744,5 @@ function calendarTests()
 
     //Turn on alerts 
     window.alert = alert;
-    
+
 }
